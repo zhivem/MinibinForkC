@@ -1,5 +1,4 @@
 using Microsoft.Win32;
-using System;
 using System.Reflection;
 
 namespace RecycleBinTrayApp
@@ -15,19 +14,16 @@ namespace RecycleBinTrayApp
         /// <returns>True, если добавлено, иначе false.</returns>
         public static bool IsAutoStartEnabled()
         {
-            using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, false))
-            {
-                if (key == null)
-                    return false;
+            using RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, false);
+            if (key == null)
+                return false;
 
-                // Приведение значения к string? и проверка на null
-                string? value = key.GetValue(AppName) as string;
-                if (value == null)
-                    return false;
+            // Приведение значения к string? и проверка на null
+            if (key.GetValue(AppName) is not string value)
+                return false;
 
-                string exePath = Assembly.GetExecutingAssembly().Location;
-                return string.Equals(value, $"\"{exePath}\"", StringComparison.InvariantCultureIgnoreCase);
-            }
+            string exePath = Assembly.GetExecutingAssembly().Location;
+            return string.Equals(value, $"\"{exePath}\"", StringComparison.InvariantCultureIgnoreCase);
         }
 
         /// <summary>
@@ -37,15 +33,13 @@ namespace RecycleBinTrayApp
         {
             try
             {
-                using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, true) ??
-                                           Registry.CurrentUser.CreateSubKey(RunRegistryKey))
-                {
-                    if (key == null)
-                        return;
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, true) ??
+                                           Registry.CurrentUser.CreateSubKey(RunRegistryKey);
+                if (key == null)
+                    return;
 
-                    string exePath = Assembly.GetExecutingAssembly().Location;
-                    key.SetValue(AppName, $"\"{exePath}\"");
-                }
+                string exePath = Assembly.GetExecutingAssembly().Location;
+                key.SetValue(AppName, $"\"{exePath}\"");
             }
             catch (Exception ex)
             {
@@ -61,13 +55,11 @@ namespace RecycleBinTrayApp
         {
             try
             {
-                using (RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, true))
-                {
-                    if (key == null)
-                        return;
+                using RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, true);
+                if (key == null)
+                    return;
 
-                    key.DeleteValue(AppName, false);
-                }
+                key.DeleteValue(AppName, false);
             }
             catch (Exception ex)
             {

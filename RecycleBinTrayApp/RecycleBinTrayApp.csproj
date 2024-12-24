@@ -9,4 +9,11 @@
     <ApplicationIcon>icons/MinibinFork.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <ItemGroup>
+    <!-- Копируем все файлы из папки icons в выходную директорию -->
+    <None Include="icons\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

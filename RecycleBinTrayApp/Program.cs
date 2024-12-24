@@ -9,7 +9,7 @@ namespace RecycleBinTrayApp
         static extern int SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        static extern int SHQueryRecycleBin(string? pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
+        private static extern int SHQueryRecycleBin(string? pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         static extern int SHGetFolderPath(IntPtr hwnd, int csidl, IntPtr hToken, uint dwFlags, System.Text.StringBuilder pszPath);

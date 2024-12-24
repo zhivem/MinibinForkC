@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("RecycleBinTrayApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dfdd078a691ec1cd084f978c62ee68f7bb9163a7")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8b20a0a93bd9e46759affe5b659eac5aad902616")]
 [assembly: System.Reflection.AssemblyProductAttribute("RecycleBinTrayApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("RecycleBinTrayApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
