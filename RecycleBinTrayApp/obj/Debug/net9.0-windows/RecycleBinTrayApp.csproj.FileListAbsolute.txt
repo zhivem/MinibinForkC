@@ -12,6 +12,4 @@ C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC
 C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\obj\Debug\net9.0-windows\RecycleBinTrayApp.pdb
 C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\obj\Debug\net9.0-windows\RecycleBinTrayApp.genruntimeconfig.cache
 C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\obj\Debug\net9.0-windows\ref\RecycleBinTrayApp.dll
-C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\bin\Debug\net9.0-windows\MaterialSkin.dll
-C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\obj\Debug\net9.0-windows\RecycleBinTrayApp.csproj.AssemblyReference.cache
-C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\obj\Debug\net9.0-windows\RecycleB.10BF8494.Up2Date
+C:\Users\miste\OneDrive\Рабочий стол\Мой проект\MinibinForkC#\RecycleBinTrayApp\obj\Debug\net9.0-windows\RecycleBinTrayApp.sourcelink.json

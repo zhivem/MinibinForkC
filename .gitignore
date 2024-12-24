@@ -1,0 +1,76 @@
+# Общие исключения
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Лог-файлы
+*.log
+
+# IDE и редакторы
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# VSCode
+.vscode/
+
+# Rider
+.idea/
+
+# Сборка
+
+# Папки сборки
+bin/
+obj/
+
+# Автогенерируемые файлы
+*.g.*
+*.g.i.*
+*.designer.*
+
+# Логи от MSBuild
+*.tlog
+
+# Пакеты
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+
+# npm
+node_modules/
+
+# Кэш и временные файлы
+
+# Visual Studio
+*.tmp
+*.temp
+*.ilk
+*.ipch
+*.pdb
+
+# Windows
+*.db
+
+# Конфиденциальные данные
+appsettings.json
+appsettings.*.json
+*.env
+
+# Резервные и временные файлы
+*.bak
+*.swp
+
+# OS-specific
+Thumbs.db
+.DS_Store
+
+# Архивы и файлы сессий
+*.zip
+*.rar
+*.tar.gz
+*.7z

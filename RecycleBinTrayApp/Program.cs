@@ -133,7 +133,7 @@ namespace RecycleBinTrayApp
         // Метод для проверки, пуста ли корзина
         static bool IsRecycleBinEmpty()
         {
-            SHQUERYRBINFO rbInfo = new SHQUERYRBINFO
+            SHQUERYRBINFO rbInfo = new()
             {
                 cbSize = Marshal.SizeOf(typeof(SHQUERYRBINFO))
             };
