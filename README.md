@@ -25,7 +25,7 @@
 
 ## Установка
 
-1. Скачайте последний релиз из [releases](https://github.com/zhivem/Minibin-C/releases).
+1. Скачайте последний релиз из [releases](https://github.com/zhivem/MinibinForkC/releases).
 2. Разархивируйте архив в удобное место на вашем компьютере либо установите через инсталлятор.
 3. Запустите.
 
