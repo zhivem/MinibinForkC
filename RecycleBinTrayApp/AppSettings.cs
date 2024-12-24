@@ -6,7 +6,7 @@ namespace RecycleBinTrayApp
     public class AppSettings
     {
         public bool HideNotifications { get; set; } = false;
-        public bool AutoStart { get; set; } = false; // Добавлено свойство AutoStart
+        public bool AutoStart { get; set; } = false;
 
         [JsonIgnore]
         private static string SettingsFilePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
