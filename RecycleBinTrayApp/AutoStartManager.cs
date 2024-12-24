@@ -8,9 +8,7 @@ namespace RecycleBinTrayApp
         private const string RunRegistryKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
         private const string AppName = "RecycleBinTrayApp";
 
-        /// <summary>
         /// Проверяет, добавлено ли приложение в автозапуск.
-        /// </summary>
         /// <returns>True, если добавлено, иначе false.</returns>
         public static bool IsAutoStartEnabled()
         {
@@ -26,9 +24,7 @@ namespace RecycleBinTrayApp
             return string.Equals(value, $"\"{exePath}\"", StringComparison.InvariantCultureIgnoreCase);
         }
 
-        /// <summary>
         /// Включает автозапуск приложения.
-        /// </summary>
         public static void EnableAutoStart()
         {
             try
@@ -48,9 +44,7 @@ namespace RecycleBinTrayApp
             }
         }
 
-        /// <summary>
         /// Отключает автозапуск приложения.
-        /// </summary>
         public static void DisableAutoStart()
         {
             try
