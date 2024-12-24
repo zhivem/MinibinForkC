@@ -16,6 +16,13 @@
 - AutoStartManager.cs - отвечает за запуск при старте системы.
 - Program.cs - основная часть утилиты.
 
+## Операционная система
+- Windows 10 или более поздняя версия
+- Архитектура: 64-разрядная (x64) 
+    
+> [!IMPORTANT]
+>  Требуется: Установленный `.NET 9.0 Runtime` или более поздняя версия. Скачать можно с официального сайта [.NET](https://dotnet.microsoft.com/ru-ru/download)
+
 ## Установка
 
 1. Скачайте последний релиз из [releases](https://github.com/zhivem/Minibin-C/releases).
