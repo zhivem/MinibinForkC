@@ -2,13 +2,19 @@
 
 ## Скриншоты 
 
-![image](https://github.com/user-attachments/assets/d7ff87a2-3aa9-455c-8440-35a652cd10d5)
-![image](https://github.com/user-attachments/assets/5d037743-3369-4766-bff9-ebf9e7a6288c)
+![MinibinForkC](https://github.com/user-attachments/assets/245decda-d690-4286-b14c-8540b053152a)
+![MinibinForkC](https://github.com/user-attachments/assets/8f8b763f-315c-45d4-89a2-8846eaf82352)
 
 ## Информация
 
 > [!NOTE]
 > Утилита Minibin написанная на языке `C#`. Оригинальный репозиторий: [Minibin](https://github.com/king-tri-ton/minibin). Форк утилиты с дополнительными функциями: [Minibin Fork by [Zhivem]](https://github.com/zhivem/Minibin-fork-zhivem). Отличие версии на `C#` в том что утилита имеет малый вес.
+
+## Файлы
+
+- AppSettings.cs - отвечает за сохранение настроек.
+- AutoStartManager.cs - отвечает за запуск при старте системы.
+- Program.cs - основная часть утилиты.
 
 ## Установка
 
@@ -20,7 +26,7 @@
 
 - Автор оригинальной утилиты: [King Triton](https://github.com/king-tri-ton)<br/>
 - Ссылка на оригинальный репозиторий утилиты: [Minibin](https://github.com/king-tri-ton/minibin)<br/>
-- Ссылка на форк утилиты написанной на Phyton: [Minibin Fork by [Zhivem]](https://github.com/zhivem/Minibin-fork-zhivem)
+- Ссылка на форк утилиты написанной на `Phyton`: [Minibin Fork by [Zhivem]](https://github.com/zhivem/Minibin-fork-zhivem)
 
 ## Лицензия
 
