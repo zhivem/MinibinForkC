@@ -3,7 +3,7 @@
 ## Скриншоты 
 
 ![MinibinForkC](https://github.com/user-attachments/assets/245decda-d690-4286-b14c-8540b053152a)
-![MinibinForkC](https://github.com/user-attachments/assets/f1ef6c8e-45de-49d7-a019-da98d3c0d487)
+![MinibinForkC](https://github.com/user-attachments/assets/eb81e743-7242-4922-b6c7-2b3bbbc45578)
 
 
 ## Информация
