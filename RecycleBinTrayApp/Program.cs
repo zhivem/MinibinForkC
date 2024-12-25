@@ -1,4 +1,9 @@
+using System;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 namespace MinibinFork
 {
@@ -46,7 +51,7 @@ namespace MinibinFork
             NotifyIcon trayIcon = new()
             {
                 Text = "Менеджер Корзины",
-                Icon = new Icon(GetIconPath(IsRecycleBinEmpty()), 40, 40),
+                Icon = new Icon(GetIconPath(IsRecycleBinEmpty(), appSettings.SelectedIconPack), 40, 40),
                 Visible = true
             };
 
@@ -57,7 +62,16 @@ namespace MinibinFork
             trayMenu.Items.Add("Открыть корзину", null, (s, e) => OpenRecycleBin());
 
             // Пункт меню "Очистить корзину"
-            trayMenu.Items.Add("Очистить корзину", null, (s, e) => EmptyRecycleBin(trayIcon));
+            trayMenu.Items.Add("Очистить корзину", null, (s, e) => EmptyRecycleBin(trayIcon, appSettings));
+
+            // Добавляем разделитель
+            trayMenu.Items.Add(new ToolStripSeparator());
+
+            // Создание и добавление меню выбора иконок через IconSelector
+            string iconsBasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "icons");
+            IconSelector iconSelector = new(iconsBasePath, appSettings.SelectedIconPack, appSettings, trayIcon, IsRecycleBinEmpty());
+            ToolStripMenuItem chooseIconMenuItem = iconSelector.CreateChooseIconMenuItem();
+            trayMenu.Items.Add(chooseIconMenuItem);
 
             // Добавляем разделитель
             trayMenu.Items.Add(new ToolStripSeparator());
@@ -79,11 +93,11 @@ namespace MinibinFork
 
             trayMenu.Items.Add(showDesktopIconItem);
 
-             // Добавляем разделитель
+            // Добавляем разделитель
             trayMenu.Items.Add(new ToolStripSeparator());
 
-            // Пункт меню "Скрыть уведомления" с флажком
-            ToolStripMenuItem hideNotificationsItem = new("Показывать уведомления")
+            // Пункт меню "Показывать уведомления" с флажком
+            ToolStripMenuItem hideNotificationsItem = new("Скрыть уведомления")
             {
                 CheckOnClick = true,
                 Checked = hideNotifications
@@ -133,10 +147,10 @@ namespace MinibinFork
             timer.Tick += (s, e) =>
             {
                 bool isEmpty = IsRecycleBinEmpty();
-                Icon newIcon = new(GetIconPath(isEmpty), 40, 40);
+                Icon newIcon = new(GetIconPath(isEmpty, appSettings.SelectedIconPack), 40, 40);
                 if (!trayIcon.Icon.Equals(newIcon))
                 {
-                    trayIcon.Icon.Dispose(); // Строка 161: Возможная ошибка CS8602
+                    trayIcon.Icon.Dispose();
                     trayIcon.Icon = newIcon;
                 }
             };
@@ -145,7 +159,7 @@ namespace MinibinFork
             Application.Run();
 
             // Очистка ресурсов при выходе
-            trayIcon.Icon?.Dispose(); // Также безопасно очистить иконку при выходе
+            trayIcon.Icon?.Dispose();
             trayIcon.Dispose();
         }
 
@@ -166,7 +180,7 @@ namespace MinibinFork
         }
 
         // Метод для очистки корзины
-        static void EmptyRecycleBin(NotifyIcon trayIcon)
+        static void EmptyRecycleBin(NotifyIcon trayIcon, AppSettings appSettings)
         {
             int result = SHEmptyRecycleBin(IntPtr.Zero, null, SHERB_NOCONFIRMATION);
             if (result == 0 || result == -2147418113) // S_OK или S_FALSE
@@ -179,7 +193,7 @@ namespace MinibinFork
             }
             // Обновление иконки
             trayIcon.Icon?.Dispose();
-            trayIcon.Icon = new Icon(GetIconPath(IsRecycleBinEmpty()), 40, 40);
+            trayIcon.Icon = new Icon(GetIconPath(IsRecycleBinEmpty(), appSettings.SelectedIconPack), 40, 40);
         }
 
         // Метод для открытия корзины
@@ -217,12 +231,21 @@ namespace MinibinFork
         }
 
         // Метод для получения пути к иконке
-        static string GetIconPath(bool isEmpty)
+        static string GetIconPath(bool isEmpty, string selectedIconPack)
         {
-
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            return isEmpty ? System.IO.Path.Combine(basePath, "icons", "minibin-fork-empty.ico") :
-                             System.IO.Path.Combine(basePath, "icons", "minibin-fork-full.ico");
+            if (string.IsNullOrEmpty(selectedIconPack) || selectedIconPack == "Default")
+            {
+                return isEmpty
+                    ? Path.Combine(basePath, "icons", "minibin-fork-empty.ico")
+                    : Path.Combine(basePath, "icons", "minibin-fork-full.ico");
+            }
+            else
+            {
+                return isEmpty
+                    ? Path.Combine(basePath, "icons", selectedIconPack, "minibin-fork-empty.ico")
+                    : Path.Combine(basePath, "icons", selectedIconPack, "minibin-fork-full.ico");
+            }
         }
     }
 }

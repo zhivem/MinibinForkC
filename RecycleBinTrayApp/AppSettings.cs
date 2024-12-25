@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -7,6 +9,7 @@ namespace MinibinFork
     {
         public bool HideNotifications { get; set; } = false;
         public bool AutoStart { get; set; } = false;
+        public string SelectedIconPack { get; set; } = "Default"; // Новое свойство
 
         [JsonIgnore]
         private static string SettingsFilePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
