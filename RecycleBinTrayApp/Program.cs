@@ -43,10 +43,12 @@ namespace RecycleBinTrayApp
             bool autoStartEnabled = appSettings.AutoStart;
 
             // Создание NotifyIcon
-            NotifyIcon trayIcon = new NotifyIcon();
-            trayIcon.Text = "Корзина";
-            trayIcon.Icon = new Icon(GetIconPath(IsRecycleBinEmpty()), 40, 40);
-            trayIcon.Visible = true;
+            NotifyIcon trayIcon = new()
+            {
+                Text = "Корзина",
+                Icon = new Icon(GetIconPath(IsRecycleBinEmpty()), 40, 40),
+                Visible = true
+            };
 
             // Создание контекстного меню
             ContextMenuStrip trayMenu = new ContextMenuStrip();
@@ -114,7 +116,7 @@ namespace RecycleBinTrayApp
             timer.Tick += (s, e) =>
             {
                 bool isEmpty = IsRecycleBinEmpty();
-                Icon newIcon = new Icon(GetIconPath(isEmpty), 40, 40);
+                Icon newIcon = new(GetIconPath(isEmpty), 40, 40);
                 if (!trayIcon.Icon.Equals(newIcon))
                 {
                     trayIcon.Icon.Dispose(); // Строка 161: Возможная ошибка CS8602
@@ -202,8 +204,8 @@ namespace RecycleBinTrayApp
         {
             // Предполагается, что иконки находятся в папке "icons" рядом с исполняемым файлом
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
-            return isEmpty ? System.IO.Path.Combine(basePath, "icons", "minibin-kt-empty.ico") :
-                             System.IO.Path.Combine(basePath, "icons", "minibin-kt-full.ico");
+            return isEmpty ? System.IO.Path.Combine(basePath, "icons", "minibin-fork-empty.ico") :
+                             System.IO.Path.Combine(basePath, "icons", "minibin-fork-full.ico");
         }
     }
 }
