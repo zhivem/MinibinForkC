@@ -1,4 +1,4 @@
-﻿namespace RecycleBinTrayApp;
+﻿namespace MinibinFork;
 
 partial class Form1
 {
