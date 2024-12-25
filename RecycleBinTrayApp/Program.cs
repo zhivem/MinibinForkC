@@ -1,5 +1,7 @@
+using System;
+using System.Drawing;
 using System.Runtime.InteropServices;
-
+using System.Windows.Forms;
 namespace RecycleBinTrayApp
 {
     static class Program
@@ -45,7 +47,7 @@ namespace RecycleBinTrayApp
             // Создание NotifyIcon
             NotifyIcon trayIcon = new()
             {
-                Text = "Корзина",
+                Text = "Менеджер Корзины",
                 Icon = new Icon(GetIconPath(IsRecycleBinEmpty()), 40, 40),
                 Visible = true
             };
@@ -65,8 +67,25 @@ namespace RecycleBinTrayApp
             // Двойной клик, чтобы открыть корзину           
             trayIcon.DoubleClick += (s, e) => OpenRecycleBin();
 
+            // Пункт меню "Отображать корзину на рабочем столе"
+            ToolStripMenuItem showDesktopIconItem = new("Отображать корзину на рабочем столе")
+            {
+                CheckOnClick = true,
+                Checked = DesktopIconManager.IsRecycleBinVisible()
+            };
+
+            showDesktopIconItem.CheckedChanged += (s, e) =>
+            {
+                DesktopIconManager.ToggleRecycleBinIcon(showDesktopIconItem.Checked);
+            };
+
+            trayMenu.Items.Add(showDesktopIconItem);
+
+             // Добавляем разделитель
+            trayMenu.Items.Add(new ToolStripSeparator());
+
             // Пункт меню "Скрыть уведомления" с флажком
-            ToolStripMenuItem hideNotificationsItem = new ToolStripMenuItem("Скрыть уведомления")
+            ToolStripMenuItem hideNotificationsItem = new("Показывать уведомления")
             {
                 CheckOnClick = true,
                 Checked = hideNotifications
