@@ -30,7 +30,6 @@ namespace MinibinFork
                     Registry.SetValue(keyPath, recycleBinKey, 1, RegistryValueKind.DWord);
                 }
 
-                // Сообщаем системе об изменениях
                 SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_FLUSH, IntPtr.Zero, IntPtr.Zero);
             }
             catch (Exception ex)
