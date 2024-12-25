@@ -1,4 +1,9 @@
+using System;
+using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Forms;
 
 namespace MinibinFork
 {
@@ -11,7 +16,7 @@ namespace MinibinFork
         private static extern int SHQueryRecycleBin(string? pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-        static extern int SHGetFolderPath(IntPtr hwnd, int csidl, IntPtr hToken, uint dwFlags, System.Text.StringBuilder pszPath);
+        static extern int SHGetFolderPath(IntPtr hwnd, int csidl, IntPtr hToken, uint dwFlags, StringBuilder pszPath);
 
         const uint SHERB_NOCONFIRMATION = 0x00000001;
         const int CSIDL_BITBUCKET = 0x0005;
@@ -37,10 +42,15 @@ namespace MinibinFork
             hideNotifications = appSettings.HideNotifications;
             bool autoStartEnabled = appSettings.AutoStart;
 
+            // Получение информации о корзине
+            (long numItems, long size) = GetRecycleBinInfo();
+            string sizeText = FormatSize(size);
+            string tooltipText = $"Корзина: {numItems} элементов, {sizeText}";
+
             // Создание NotifyIcon
             NotifyIcon trayIcon = new()
             {
-                Text = "Менеджер Корзины",
+                Text = tooltipText,
                 Icon = new Icon(GetIconPath(IsRecycleBinEmpty(), appSettings.SelectedIconPack), 40, 40),
                 Visible = true
             };
@@ -130,7 +140,7 @@ namespace MinibinFork
 
             trayIcon.ContextMenuStrip = trayMenu;
 
-            // Таймер для обновления иконки
+            // Таймер для обновления иконки и информации в тултипе
             System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
             timer.Interval = 3000; // 3 секунды
             timer.Tick += (s, e) =>
@@ -142,8 +152,20 @@ namespace MinibinFork
                     trayIcon.Icon.Dispose();
                     trayIcon.Icon = newIcon;
                 }
+
+                // Обновление информации о корзине
+                (long currentNumItems, long currentSize) = GetRecycleBinInfo();
+                string currentSizeText = FormatSize(currentSize);
+                string currentTooltipText = $"Корзина: {currentNumItems} элементов, {currentSizeText}";
+                if (trayIcon.Text != currentTooltipText)
+                {
+                    trayIcon.Text = currentTooltipText;
+                }
             };
             timer.Start();
+
+            // Установка начальной информации в тултипе
+            trayIcon.Text = tooltipText;
 
             Application.Run();
 
@@ -167,6 +189,35 @@ namespace MinibinFork
             return rbInfo.i64NumItems == 0;
         }
 
+        // Метод для получения информации о корзине
+        static (long numItems, long size) GetRecycleBinInfo()
+        {
+            SHQUERYRBINFO rbInfo = new()
+            {
+                cbSize = Marshal.SizeOf(typeof(SHQUERYRBINFO))
+            };
+            int result = SHQueryRecycleBin(null, ref rbInfo);
+            if (result != 0)
+            {
+                return (0, 0);
+            }
+            return (rbInfo.i64NumItems, rbInfo.i64Size);
+        }
+
+        // Метод для форматирования размера в удобочитаемый формат
+        static string FormatSize(long bytes)
+        {
+            double size = bytes;
+            string[] units = { "Б", "КБ", "МБ", "ГБ", "ТБ" };
+            int unit = 0;
+            while (size >= 1024 && unit < units.Length - 1)
+            {
+                size /= 1024;
+                unit++;
+            }
+            return $"{size:0.##} {units[unit]}";
+        }
+
         // Метод для очистки корзины
         static void EmptyRecycleBin(NotifyIcon trayIcon, AppSettings appSettings)
         {
@@ -179,9 +230,13 @@ namespace MinibinFork
             {
                 ShowNotification(trayIcon, "Корзина", $"Произошла ошибка при очистке корзины. Код ошибки: {result}", ToolTipIcon.Error);
             }
-            // Обновление иконки
+            // Обновление иконки и тултипа
             trayIcon.Icon?.Dispose();
             trayIcon.Icon = new Icon(GetIconPath(IsRecycleBinEmpty(), appSettings.SelectedIconPack), 40, 40);
+
+            (long numItems, long size) = GetRecycleBinInfo();
+            string sizeText = FormatSize(size);
+            trayIcon.Text = $"Корзина: {numItems} элементов, {sizeText}";
         }
 
         // Метод для открытия корзины
