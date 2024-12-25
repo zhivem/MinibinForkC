@@ -202,7 +202,7 @@ namespace RecycleBinTrayApp
         // Метод для получения пути к иконке
         static string GetIconPath(bool isEmpty)
         {
-            // Предполагается, что иконки находятся в папке "icons" рядом с исполняемым файлом
+
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             return isEmpty ? System.IO.Path.Combine(basePath, "icons", "minibin-fork-empty.ico") :
                              System.IO.Path.Combine(basePath, "icons", "minibin-fork-full.ico");

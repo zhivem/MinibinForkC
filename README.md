@@ -3,7 +3,7 @@
 ## Скриншоты 
 
 ![MinibinForkC](https://github.com/user-attachments/assets/245decda-d690-4286-b14c-8540b053152a)
-![MinibinForkC](https://github.com/user-attachments/assets/8f8b763f-315c-45d4-89a2-8846eaf82352)
+![MinibinForkC](https://github.com/user-attachments/assets/143734bf-fe36-4c69-87ef-aa474219b381)
 
 ## Информация
 
@@ -25,7 +25,7 @@
 
 ## Установка
 
-1. Скачайте последний релиз из [releases](https://github.com/zhivem/Minibin-C/releases).
+1. Скачайте последний релиз из [releases](https://github.com/zhivem/MinibinForkC/releases).
 2. Разархивируйте архив в удобное место на вашем компьютере либо установите через инсталлятор.
 3. Запустите.
 
