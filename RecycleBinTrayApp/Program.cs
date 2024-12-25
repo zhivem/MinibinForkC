@@ -1,15 +1,9 @@
-using System;
-using System.Drawing;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 namespace MinibinFork
 {
     static class Program
     {
-        // Импорт необходимых функций из shell32.dll
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         static extern int SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
 
@@ -19,11 +13,9 @@ namespace MinibinFork
         [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
         static extern int SHGetFolderPath(IntPtr hwnd, int csidl, IntPtr hToken, uint dwFlags, System.Text.StringBuilder pszPath);
 
-        // Константы
         const uint SHERB_NOCONFIRMATION = 0x00000001;
         const int CSIDL_BITBUCKET = 0x0005;
 
-        // Структура для SHQueryRecycleBin
         [StructLayout(LayoutKind.Sequential)]
         struct SHQUERYRBINFO
         {
@@ -32,10 +24,8 @@ namespace MinibinFork
             public long i64NumItems;
         }
 
-        // Флаг для управления уведомлениями
         static bool hideNotifications = false;
 
-        // Основной метод
         [STAThread]
         static void Main()
         {
@@ -105,7 +95,6 @@ namespace MinibinFork
             hideNotificationsItem.CheckedChanged += (s, e) =>
             {
                 hideNotifications = hideNotificationsItem.Checked;
-                // Сохранение состояния флажка
                 appSettings.HideNotifications = hideNotifications;
                 appSettings.Save();
             };
@@ -173,7 +162,6 @@ namespace MinibinFork
             int result = SHQueryRecycleBin(null, ref rbInfo);
             if (result != 0)
             {
-                // Ошибка при запросе состояния корзины
                 return false;
             }
             return rbInfo.i64NumItems == 0;
@@ -210,7 +198,6 @@ namespace MinibinFork
             }
             catch (Exception ex)
             {
-                // Обработка возможных ошибок при запуске процесса
                 MessageBox.Show($"Не удалось открыть корзину: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -220,7 +207,6 @@ namespace MinibinFork
         {
             if (hideNotifications)
             {
-                // Уведомления скрыты, не показываем их
                 return;
             }
 

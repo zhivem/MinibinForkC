@@ -15,7 +15,6 @@ namespace MinibinFork
             if (key == null)
                 return false;
 
-            // Приведение значения к string? и проверка на null
             if (key.GetValue(AppName) is not string value)
                 return false;
 
@@ -38,7 +37,6 @@ namespace MinibinFork
             }
             catch (Exception ex)
             {
-                // Обработка ошибок при добавлении в автозапуск
                 Console.WriteLine($"Ошибка при включении автозапуска: {ex.Message}");
             }
         }
@@ -56,7 +54,6 @@ namespace MinibinFork
             }
             catch (Exception ex)
             {
-                // Обработка ошибок при удалении из автозапуска
                 Console.WriteLine($"Ошибка при отключении автозапуска: {ex.Message}");
             }
         }

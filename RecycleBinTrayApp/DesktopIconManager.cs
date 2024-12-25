@@ -7,7 +7,6 @@ namespace MinibinFork
     {
         private const string CLSID_RecycleBin = "{645FF040-5081-101B-9F08-00AA002F954E}";
 
-        // Декларация метода из shell32.dll
         [DllImport("shell32.dll", CharSet = CharSet.Auto)]
         public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
 

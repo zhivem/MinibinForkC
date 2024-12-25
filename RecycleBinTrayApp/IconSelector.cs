@@ -1,10 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Windows.Forms;
-
 namespace MinibinFork
 {
     public class IconSelector
@@ -45,7 +38,7 @@ namespace MinibinFork
             {
                 ToolStripMenuItem packItem = new(pack)
                 {
-                    Checked = (pack == appSettings.SelectedIconPack),
+                    Checked = pack == appSettings.SelectedIconPack,
                     CheckOnClick = true
                 };
 
@@ -69,7 +62,6 @@ namespace MinibinFork
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Не удалось загрузить иконку для пакета '{pack}': {ex.Message}");
-                        // Можно установить изображение по умолчанию или оставить без иконки
                         packItem.Image = null;
                     }
                 }

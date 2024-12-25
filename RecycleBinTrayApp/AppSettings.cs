@@ -1,5 +1,3 @@
-using System;
-using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -9,7 +7,7 @@ namespace MinibinFork
     {
         public bool HideNotifications { get; set; } = false;
         public bool AutoStart { get; set; } = false;
-        public string SelectedIconPack { get; set; } = "Default"; // Новое свойство
+        public string SelectedIconPack { get; set; } = "Default";
 
         [JsonIgnore]
         private static string SettingsFilePath => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
@@ -26,7 +24,6 @@ namespace MinibinFork
                 }
                 catch (Exception ex)
                 {
-                    // Обработка ошибок десериализации
                     Console.WriteLine($"Ошибка при загрузке настроек: {ex.Message}");
                     return new AppSettings();
                 }
@@ -35,7 +32,7 @@ namespace MinibinFork
             {
                 // Если файл не существует, создаём новый экземпляр с настройками по умолчанию
                 AppSettings defaultSettings = new AppSettings();
-                defaultSettings.Save(); // Сохраняем настройки по умолчанию
+                defaultSettings.Save();
                 return defaultSettings;
             }
         }
@@ -50,7 +47,6 @@ namespace MinibinFork
             }
             catch (Exception ex)
             {
-                // Обработка ошибок сериализации
                 Console.WriteLine($"Ошибка при сохранении настроек: {ex.Message}");
             }
         }
