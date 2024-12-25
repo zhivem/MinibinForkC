@@ -9,7 +9,6 @@ namespace MinibinFork
         private const string AppName = "RecycleBinTrayApp";
 
         /// Проверяет, добавлено ли приложение в автозапуск.
-        /// <returns>True, если добавлено, иначе false.</returns>
         public static bool IsAutoStartEnabled()
         {
             using RegistryKey? key = Registry.CurrentUser.OpenSubKey(RunRegistryKey, false);
