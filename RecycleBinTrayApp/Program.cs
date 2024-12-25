@@ -1,9 +1,5 @@
-using System;
-using System.Drawing;
-using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
 
 namespace MinibinFork
 {
@@ -47,7 +43,6 @@ namespace MinibinFork
             string sizeText = FormatSize(size);
             string tooltipText = $"Корзина: {numItems} элементов, {sizeText}";
 
-            // Создание NotifyIcon
             NotifyIcon trayIcon = new()
             {
                 Text = tooltipText,
@@ -64,16 +59,14 @@ namespace MinibinFork
             // Пункт меню "Очистить корзину"
             trayMenu.Items.Add("Очистить корзину", null, (s, e) => EmptyRecycleBin(trayIcon, appSettings));
 
-            // Добавляем разделитель
             trayMenu.Items.Add(new ToolStripSeparator());
 
-            // Создание и добавление меню выбора иконок через IconSelector
+            // Создание и добавление меню выбора иконок
             string iconsBasePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "icons");
             IconSelector iconSelector = new(iconsBasePath, appSettings.SelectedIconPack, appSettings, trayIcon, IsRecycleBinEmpty());
             ToolStripMenuItem chooseIconMenuItem = iconSelector.CreateChooseIconMenuItem();
             trayMenu.Items.Add(chooseIconMenuItem);
 
-            // Добавляем разделитель
             trayMenu.Items.Add(new ToolStripSeparator());
 
             // Двойной клик, чтобы открыть корзину           
@@ -93,10 +86,9 @@ namespace MinibinFork
 
             trayMenu.Items.Add(showDesktopIconItem);
 
-            // Добавляем разделитель
             trayMenu.Items.Add(new ToolStripSeparator());
 
-            // Пункт меню "Показывать уведомления" с флажком
+            // Пункт меню "Показывать уведомления"
             ToolStripMenuItem hideNotificationsItem = new("Скрыть уведомления")
             {
                 CheckOnClick = true,
@@ -141,8 +133,10 @@ namespace MinibinFork
             trayIcon.ContextMenuStrip = trayMenu;
 
             // Таймер для обновления иконки и информации в тултипе
-            System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-            timer.Interval = 3000; // 3 секунды
+            System.Windows.Forms.Timer timer = new()
+            {
+                Interval = 3000 // 3 секунды
+            };
             timer.Tick += (s, e) =>
             {
                 bool isEmpty = IsRecycleBinEmpty();
@@ -164,12 +158,10 @@ namespace MinibinFork
             };
             timer.Start();
 
-            // Установка начальной информации в тултипе
             trayIcon.Text = tooltipText;
 
             Application.Run();
 
-            // Очистка ресурсов при выходе
             trayIcon.Icon?.Dispose();
             trayIcon.Dispose();
         }
@@ -204,7 +196,7 @@ namespace MinibinFork
             return (rbInfo.i64NumItems, rbInfo.i64Size);
         }
 
-        // Метод для форматирования размера в удобочитаемый формат
+        // Переводим
         static string FormatSize(long bytes)
         {
             double size = bytes;
