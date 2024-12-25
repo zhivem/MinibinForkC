@@ -3,7 +3,8 @@
 ## Скриншоты 
 
 ![MinibinForkC](https://github.com/user-attachments/assets/245decda-d690-4286-b14c-8540b053152a)
-![MinibinForkC](https://github.com/user-attachments/assets/143734bf-fe36-4c69-87ef-aa474219b381)
+![MinibinForkC](https://github.com/user-attachments/assets/f1ef6c8e-45de-49d7-a019-da98d3c0d487)
+
 
 ## Информация
 
@@ -14,6 +15,7 @@
 
 - AppSettings.cs - отвечает за сохранение настроек.
 - AutoStartManager.cs - отвечает за запуск при старте системы.
+- DesktopIconManager.cs - отвечает за отображение корзины на рабочем столе.
 - Program.cs - основная часть утилиты.
 
 ## Операционная система
