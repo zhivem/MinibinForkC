@@ -1,9 +1,7 @@
-using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
-using System.Windows.Forms;
 
-namespace RecycleBinTrayApp
+namespace MinibinFork
 {
     public static class DesktopIconManager
     {

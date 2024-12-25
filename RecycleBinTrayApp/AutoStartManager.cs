@@ -1,7 +1,7 @@
 using Microsoft.Win32;
 using System.Reflection;
 
-namespace RecycleBinTrayApp
+namespace MinibinFork
 {
     public static class AutoStartManager
     {

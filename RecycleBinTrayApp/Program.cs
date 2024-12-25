@@ -1,8 +1,6 @@
-using System;
-using System.Drawing;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
-namespace RecycleBinTrayApp
+
+namespace MinibinFork
 {
     static class Program
     {
