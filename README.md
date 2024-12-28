@@ -1,10 +1,9 @@
-#  RecycleBinManager by [Zhivem] на C#
+#  <img src="https://raw.githubusercontent.com/zhivem/MinibinForkC/refs/heads/main/RecycleBinManager/RecycleBinManager.ico?token=GHSAT0AAAAAAC4KREXCTBQAINTZBCOABKOCZ3PKYUA" width="4%" height="4%"> RecycleBinManager by [Zhivem] на C#
 
 ## Скриншоты 
 
-![MinibinForkC](https://github.com/user-attachments/assets/245decda-d690-4286-b14c-8540b053152a)
-![MinibinForkC](https://github.com/user-attachments/assets/eb81e743-7242-4922-b6c7-2b3bbbc45578)
-![image](https://github.com/user-attachments/assets/2525d3bc-de7e-4775-88c3-fd6f3920e105)
+![image](https://github.com/user-attachments/assets/9a07622c-2113-4f64-8ccf-1807a74d5c0b)
+![image](https://github.com/user-attachments/assets/63d9c545-de2a-4c24-8ef4-e7a7fc5ae468)
 
 ## Информация
 
