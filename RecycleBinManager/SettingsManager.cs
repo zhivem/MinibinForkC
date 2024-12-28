@@ -4,35 +4,48 @@ namespace RecycleBinManager
 {
     internal static class SettingsManager
     {
-        private static readonly string SettingsFilePath = "settings.json";
+        private static readonly string SettingsFilePath = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "RecycleBinManager",
+            "settings.json"
+        );
 
         public static AppSettings LoadSettings()
         {
-            if (File.Exists(SettingsFilePath))
+            try
             {
-                try
+                if (!File.Exists(SettingsFilePath))
                 {
-                    var json = File.ReadAllText(SettingsFilePath);
-                    return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+                    // Создаем файл с настройками по умолчанию, если его нет
+                    SaveSettings(new AppSettings());
                 }
-                catch
-                {
-                    // Если чтение настроек не удалось, возвращаем настройки по умолчанию.
-                }
+
+                var json = File.ReadAllText(SettingsFilePath);
+                return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
             }
-            return new AppSettings();
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка загрузки настроек: {ex.Message}");
+                return new AppSettings(); // Настройки по умолчанию
+            }
         }
 
         public static void SaveSettings(AppSettings settings)
         {
             try
             {
+                string directory = Path.GetDirectoryName(SettingsFilePath)!;
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
                 var json = JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(SettingsFilePath, json);
             }
-            catch
+            catch (Exception ex)
             {
-                // Обработка ошибок при записи настроек (логирование, уведомление и т.д.)
+                Console.WriteLine($"Ошибка сохранения настроек: {ex.Message}");
             }
         }
     }
