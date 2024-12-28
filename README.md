@@ -1,4 +1,4 @@
-#  <img src="https://raw.githubusercontent.com/zhivem/MinibinForkC/refs/heads/main/RecycleBinManager/RecycleBinManager.ico?token=GHSAT0AAAAAAC4KREXCTBQAINTZBCOABKOCZ3PKYUA" width="4%" height="4%"> RecycleBinManager by [Zhivem] на C#
+#  <img src="https://github.com/zhivem/RecycleBinManagerC/blob/main/RecycleBinManager/RecycleBinManager.ico" width="4%" height="4%"> RecycleBinManager by [Zhivem] на C#
 
 ## Скриншоты 
 
