@@ -5,6 +5,10 @@ namespace RecycleBinManager
 {
     public static class IconPackManager
     {
+        private static string _currentPack = "default";
+        private static Icon? _emptyIcon;
+        private static Icon? _fullIcon;
+
         public static void ApplyIconPack(string packName, NotifyIcon notifyIcon)
         {
             string packPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "icons", packName);
@@ -14,16 +18,48 @@ namespace RecycleBinManager
 
             if (File.Exists(emptyIconPath) && File.Exists(fullIconPath))
             {
-                notifyIcon.Icon = new Icon(IsRecycleBinEmpty() ? emptyIconPath : fullIconPath);
+                // Загружаем иконки только если они существуют
+                _emptyIcon = new Icon(emptyIconPath);
+                _fullIcon = new Icon(fullIconPath);
+
+                bool isRecycleBinEmpty = IsRecycleBinEmpty();
+                notifyIcon.Icon = isRecycleBinEmpty ? _emptyIcon : _fullIcon;
+
+                _currentPack = packName;
                 SaveCurrentPack(packName);
+            }
+            else
+            {
+                notifyIcon.Icon = SystemIcons.Application;
+            }
+        }
+
+        public static void UpdateIconsBasedOnState(NotifyIcon notifyIcon, bool isEmpty)
+        {
+            if (isEmpty && _emptyIcon != null)
+            {
+                notifyIcon.Icon = _emptyIcon;
+            }
+            else if (!isEmpty && _fullIcon != null)
+            {
+                notifyIcon.Icon = _fullIcon;
+            }
+            else
+            {
+                notifyIcon.Icon = SystemIcons.Application;
             }
         }
 
         public static ToolStripMenuItem CreateIconPackMenuItem(string packName, NotifyIcon notifyIcon)
         {
-            var icon = LoadIconForPack(packName);
+            Icon? icon = LoadIconForPack(packName);
 
-            return new ToolStripMenuItem(packName, icon?.ToBitmap(), (_, _) => ApplyIconPack(packName, notifyIcon));
+            return new ToolStripMenuItem(packName, icon?.ToBitmap(), (_, _) =>
+            {
+                ApplyIconPack(packName, notifyIcon);
+                bool isRecycleBinEmpty = IsRecycleBinEmpty();
+                UpdateIconsBasedOnState(notifyIcon, isRecycleBinEmpty);
+            });
         }
 
         private static Icon? LoadIconForPack(string packName)
@@ -49,7 +85,7 @@ namespace RecycleBinManager
         public static string LoadCurrentPack()
         {
             var settings = SettingsManager.LoadSettings();
-            return settings.CurrentIconPack ?? "Iconpack1";
+            return settings.CurrentIconPack ?? "default";
         }
 
         private static bool IsRecycleBinEmpty()

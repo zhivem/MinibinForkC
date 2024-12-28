@@ -9,6 +9,7 @@ namespace RecycleBinManager
         private static NotifyIcon _notifyIcon = new();
         private static bool _showNotifications = true;
         private static bool _showRecycleBinOnDesktop = RecycleBinVisibilityManager.IsRecycleBinVisibleOnDesktop();
+        private static bool _previousRecycleBinState = true;
 
         [STAThread]
         public static void Main()
@@ -25,7 +26,6 @@ namespace RecycleBinManager
             {
                 Text = "Менеджер Корзины",
                 Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath) ?? SystemIcons.Application,
-                
                 Visible = true
             };
 
@@ -38,7 +38,7 @@ namespace RecycleBinManager
                 }
             };
 
-            // Объявляем переменные меню
+            // Инициализация переменных меню
             ToolStripMenuItem? showNotificationsMenu = null;
             ToolStripMenuItem? autoStartMenu = null;
             ToolStripMenuItem? showRecycleBinOnDesktopMenu = null;
@@ -87,7 +87,10 @@ namespace RecycleBinManager
                 {
                     autoStartMenu.Checked = AutoStartManager.IsAutoStartEnabled();
                 }
-            });
+            })
+            {
+                Checked = AutoStartManager.IsAutoStartEnabled()
+            };
 
             // Меню отображения корзины на рабочем столе
             showRecycleBinOnDesktopMenu = new ToolStripMenuItem("Отображать 🗑️ на рабочем столе", null, (_, _) =>
@@ -120,14 +123,13 @@ namespace RecycleBinManager
             _notifyIcon.AddMenu("-");
             _notifyIcon.AddMenu(showRecycleBinOnDesktopMenu);
             _notifyIcon.AddMenu("-");
-            _notifyIcon.AddMenu("Выбрать иконку", null!,
-                  CreateIconPackMenuItems(_notifyIcon));
-            _notifyIcon.AddMenu("-");    
+            _notifyIcon.AddMenu("Выбрать иконку", null!, CreateIconPackMenuItems(_notifyIcon));
+            _notifyIcon.AddMenu("-");
             _notifyIcon.AddMenu("Выход", (_, _) => Application.Exit());
 
             // Таймер для проверки состояния корзины
-            var timer = new System.Windows.Forms.Timer { Interval = 3000 };
-            timer.Tick += (_, _) => UpdateTrayIcon();
+            var timer = new System.Windows.Forms.Timer { Interval = 1000 };  // интервал обновления в 3 секунды
+            timer.Tick += (_, _) => UpdateTrayIcon();  // Обновление иконки каждый раз
             timer.Start();
 
             // Устанавливаем начальный набор иконок
@@ -138,8 +140,23 @@ namespace RecycleBinManager
 
         private static void UpdateTrayIcon()
         {
-            IconPackManager.ApplyIconPack(IconPackManager.LoadCurrentPack(), _notifyIcon);
-            UpdateTrayText();
+            bool isRecycleBinEmpty = IsRecycleBinEmpty();
+
+            // Проверяем, изменилось ли состояние корзины
+            if (isRecycleBinEmpty != _previousRecycleBinState)
+            {
+                _previousRecycleBinState = isRecycleBinEmpty;
+                IconPackManager.UpdateIconsBasedOnState(_notifyIcon, isRecycleBinEmpty);
+            }
+
+            UpdateTrayText(); 
+        }
+
+        private static bool IsRecycleBinEmpty()
+        {
+            SHQUERYRBINFO rbInfo = new() { cbSize = (uint)Marshal.SizeOf(typeof(SHQUERYRBINFO)) };
+            SHQueryRecycleBin(null, ref rbInfo);
+            return rbInfo.i64NumItems == 0;
         }
 
         private static void UpdateTrayText()
@@ -169,7 +186,7 @@ namespace RecycleBinManager
 
         private static void OpenRecycleBin()
         {
-            Process.Start("explorer.exe", "shell:RecycleBinFolder");
+            Process.Start(new ProcessStartInfo("explorer.exe", "shell:RecycleBinFolder") { UseShellExecute = true });
         }
 
         private static void EmptyRecycleBin()
@@ -183,6 +200,11 @@ namespace RecycleBinManager
             if (result == 0)
             {
                 ShowBalloonNotification("Корзина", "Корзина успешно очищена.", ToolTipIcon.Info);
+                UpdateTrayIcon(); 
+            }
+            else
+            {
+                ShowBalloonNotification("Ошибка", "Не удалось очистить корзину.", ToolTipIcon.Error);
             }
         }
 
