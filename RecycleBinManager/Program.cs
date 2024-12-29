@@ -10,6 +10,7 @@ namespace RecycleBinManager
         private static bool _showNotifications = true;
         private static bool _showRecycleBinOnDesktop = RecycleBinVisibilityManager.IsRecycleBinVisibleOnDesktop();
         private static bool _previousRecycleBinState = true;
+        private static System.Windows.Forms.Timer? _timer;
 
         [STAThread]
         public static void Main()
@@ -20,6 +21,7 @@ namespace RecycleBinManager
             var settings = SettingsManager.LoadSettings();
             _showNotifications = settings.ShowNotifications;
             _showRecycleBinOnDesktop = settings.ShowRecycleBinOnDesktop;
+            int updateInterval = settings.UpdateIntervalSeconds;
 
             // Устанавливаем NotifyIcon
             _notifyIcon = new NotifyIcon
@@ -110,7 +112,19 @@ namespace RecycleBinManager
                 Checked = _showRecycleBinOnDesktop
             };
 
-            // Добавляем пункты меню
+            var updateMenu = new ToolStripMenuItem("Таймер обновления корзины");
+            int[] intervals = { 1, 3, 5 };
+            foreach (var interval in intervals)
+            {
+                var item = new ToolStripMenuItem($"{interval} секунд")
+                {
+                    Tag = interval,
+                    Checked = (settings.UpdateIntervalSeconds == interval)
+                };
+                item.Click += UpdateIntervalMenuItem_Click;
+                updateMenu.DropDownItems.Add(item);
+            }
+
             _notifyIcon.AddMenu("Открыть корзину", (_, _) => OpenRecycleBin());
             _notifyIcon.AddMenu("Очистить корзину", (_, _) =>
             {
@@ -123,19 +137,56 @@ namespace RecycleBinManager
             _notifyIcon.AddMenu("-");
             _notifyIcon.AddMenu(showRecycleBinOnDesktopMenu);
             _notifyIcon.AddMenu("-");
+            _notifyIcon.AddMenu(updateMenu);
+            _notifyIcon.AddMenu("-");
             _notifyIcon.AddMenu("Выбрать иконку", null!, CreateIconPackMenuItems(_notifyIcon));
             _notifyIcon.AddMenu("-");
             _notifyIcon.AddMenu("Выход", (_, _) => Application.Exit());
 
-            // Таймер для проверки состояния корзины
-            var timer = new System.Windows.Forms.Timer { Interval = 1700 };  
-            timer.Tick += (_, _) => UpdateTrayIcon(); 
-            timer.Start();
+            _timer = new System.Windows.Forms.Timer { Interval = updateInterval * 1000 };
+            _timer.Tick += (_, _) => UpdateTrayIcon();
+            _timer.Start();
 
             // Устанавливаем начальный набор иконок
             IconPackManager.ApplyIconPack(IconPackManager.LoadCurrentPack(), _notifyIcon);
 
             Application.Run();
+        } 
+
+        // Обработчик выбора интервала обновления
+        private static void UpdateIntervalMenuItem_Click(object? sender, EventArgs e)
+        {
+            if (sender is ToolStripMenuItem clickedItem && clickedItem.Tag is int selectedInterval)
+            {
+                // Обновляем настройки
+                var settings = SettingsManager.LoadSettings();
+                settings.UpdateIntervalSeconds = selectedInterval;
+                SettingsManager.SaveSettings(settings);
+
+                // Обновляем состояние галочек в меню
+                if (clickedItem.OwnerItem is ToolStripDropDownItem parentMenu)
+                {
+                    foreach (ToolStripMenuItem item in parentMenu.DropDownItems)
+                    {
+                        item.Checked = (item == clickedItem);
+                    }
+                }
+
+                // Перезапускаем таймер с новым интервалом
+                _timer?.Stop();
+                if (_timer != null)
+                {
+                    _timer.Interval = selectedInterval * 1000;
+                    _timer.Start();
+                }
+
+                // Отображаем уведомление
+                ShowBalloonNotification(
+                    "Обновление корзины",
+                    $"Интервал обновления установлен на {selectedInterval} секунд.",
+                    ToolTipIcon.Info
+                );
+            }
         }
 
         private static void UpdateTrayIcon()

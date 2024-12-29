@@ -56,5 +56,6 @@ namespace RecycleBinManager
         public bool ShowRecycleBinOnDesktop { get; set; } = true;
         public bool AutoStartEnabled { get; set; } = false;
         public string CurrentIconPack { get; set; } = "default";
+        public int UpdateIntervalSeconds { get; set; } = 1;
     }
 }
