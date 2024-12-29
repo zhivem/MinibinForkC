@@ -2,7 +2,7 @@
 
 ## Скриншоты 
 
-![image](https://github.com/user-attachments/assets/9a07622c-2113-4f64-8ccf-1807a74d5c0b)
+![image](https://github.com/user-attachments/assets/71989388-f1d4-4e1b-b356-7f1ba10f8df1)
 ![image](https://github.com/user-attachments/assets/63d9c545-de2a-4c24-8ef4-e7a7fc5ae468)
 
 ## Информация
@@ -41,7 +41,7 @@
 
 - **Обновление информации**:
     - Программа регулярно обновляет состояние корзины (количество файлов и занимаемое место).
-
+      
 ## Установка
 
     - Скачайте или клонируйте репозиторий.
