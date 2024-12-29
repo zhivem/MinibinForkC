@@ -128,8 +128,8 @@ namespace RecycleBinManager
             _notifyIcon.AddMenu("Выход", (_, _) => Application.Exit());
 
             // Таймер для проверки состояния корзины
-            var timer = new System.Windows.Forms.Timer { Interval = 1000 };  // интервал обновления в 3 секунды
-            timer.Tick += (_, _) => UpdateTrayIcon();  // Обновление иконки каждый раз
+            var timer = new System.Windows.Forms.Timer { Interval = 1700 };  
+            timer.Tick += (_, _) => UpdateTrayIcon(); 
             timer.Start();
 
             // Устанавливаем начальный набор иконок
